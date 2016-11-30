@@ -14,11 +14,16 @@ public class Student {
 	private double mGpa;
 	private String mUwEmail;
 	private String mExternalEmail;
+	//TODO transfer/ internship/ employment
 	
 	
 	/** @return student id */
 	public String getId() {
 		return mId;
+	}
+	
+	private void setId(String id) {
+		mId = id;
 	}
 
 	/** @return last name */
