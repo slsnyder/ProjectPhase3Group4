@@ -48,8 +48,7 @@ public class Student {
 	}
 
 	public void setId(String id) {
-		Integer idNum = Integer.parseInt(id);
-		if (idNum < 0 || idNum > 9999999) {
+		if (id == null || Integer.parseInt(id) < 0 || Integer.parseInt(id) > 9999999) {
 			throw new IllegalArgumentException("Invalid student ID number.");
 		}
 		mId = id;
@@ -61,8 +60,7 @@ public class Student {
 	}
 
 	public void setLastName(String lastName) {
-		int len = lastName.length();
-		if (len < 2 || len > 25) {
+		if (lastName == null || lastName.length() < 2 || lastName.length() > 25) {
 			throw new IllegalArgumentException("Invalid last name.");
 		}
 		mLastName = lastName;
@@ -74,8 +72,7 @@ public class Student {
 	}
 
 	public void setFirstName(String firstName) {
-		int len = firstName.length();
-		if (len < 2 || len > 25) {
+		if (firstName == null || firstName.length() < 2 || firstName.length() > 25) {
 			throw new IllegalArgumentException("Invalid first name.");
 		}
 		mFirstName = firstName;
@@ -87,8 +84,7 @@ public class Student {
 	}
 
 	public void setAcademicProgram(String academicProgram) {
-		int len = academicProgram.length();
-		if (len == 0 || len > 3) {
+		if (academicProgram == null || academicProgram.length() == 0 || academicProgram.length() > 3) {
 			throw new IllegalArgumentException("Invalid academic program.");
 		}
 		mAcademicProgram = academicProgram;
@@ -100,8 +96,7 @@ public class Student {
 	}
 
 	public void setDegreeLevel(String degreeLevel) {
-		int len = degreeLevel.length();
-		if (len < 2 || len > 3) {
+		if (degreeLevel == null || degreeLevel.length() < 2 || degreeLevel.length() > 3) {
 			throw new IllegalArgumentException("Invalid degree level.");
 		}
 		mDegreeLevel = degreeLevel;
@@ -113,7 +108,7 @@ public class Student {
 	}
 
 	public void setGradTerm(String gradTerm) {
-		if (gradTerm.length() != 6) {
+		if (gradTerm == null || gradTerm.length() != 6) {
 			throw new IllegalArgumentException("Invalid graduation term.");
 		}
 		mGradTerm = gradTerm;
@@ -125,7 +120,7 @@ public class Student {
 	}
 
 	public void setGradYear(String gradYear) {
-		if (gradYear.length() != 4) {
+		if (gradYear == null || gradYear.length() != 4) {
 			throw new IllegalArgumentException("Invalid graduation year.");
 		}
 		mGradYear = gradYear;
@@ -149,9 +144,8 @@ public class Student {
 	}
 
 	public void setUwEmail(String uwEmail) {
-		int len = uwEmail.length();
-		if(len < 8 ||
-				len > 15 ||
+		if(uwEmail == null ||
+				uwEmail.length() < 8 || uwEmail.length() > 15 ||
 				!uwEmail.endsWith("@uw.edu")) {
 					throw new IllegalArgumentException("Invalid UW email address.");
 				}
@@ -164,8 +158,9 @@ public class Student {
 	}
 
 	public void setExternalEmail(String externalEmail) {
-		int len = externalEmail.length();
-		if(len < 3 || len > 254) {
+		if(externalEmail == null ||
+				externalEmail.length() < 3 || externalEmail.length() > 254 ||
+				!externalEmail.contains("@")) {
 			throw new IllegalArgumentException("Invalid external email address.");
 		}
 		mExternalEmail = externalEmail;
