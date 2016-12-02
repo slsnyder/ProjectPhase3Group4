@@ -21,6 +21,8 @@ public class Student {
 	private String mUwEmail;
 	private String mExternalEmail;
 	private List<CollegeTransfer> mCollegeTransfer;
+	// private List<Employment> mJobs;
+	// private List<Employment> mInternships;
 
 	// TODO internship/ employment
 	

@@ -1,6 +1,7 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -97,5 +98,43 @@ public class StudentDB {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Adds a new student to the Student table. 
+	 * @param student
+	 * @return Returns "Added Student successfully" or "Error adding Student: " with the sql exception.
+	 */
+	public String addStudent(Student student) {
+		String sql = "insert into Student(lastName, firstName, academicProgram, "
+				+ "degreeLevel, gradTerm, gradYear, gpa, uwEmail, externalEmail) values "
+				+ "(?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+
+		if (mConnection == null) {
+			try {
+				mConnection = DataConnection.getConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = mConnection.prepareStatement(sql);
+			preparedStatement.setString(1, student.getLastName());
+			preparedStatement.setString(2, student.getFirstName());
+			preparedStatement.setString(3, student.getAcademicProgram());
+			preparedStatement.setString(4, student.getDegreeLevel());
+			preparedStatement.setString(5, student.getGradTerm());
+			preparedStatement.setInt(6, Integer.parseInt(student.getGradYear()));
+			preparedStatement.setDouble(7, student.getGpa());
+			preparedStatement.setString(8, student.getUwEmail());
+			preparedStatement.setString(9, student.getExternalEmail());
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error adding Student: " + e.getMessage();
+		}
+		return "Added Student successfully";
 	}
 }
