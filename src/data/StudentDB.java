@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import employment.Company;
 import student.CollegeTransfer;
 import student.Student;
 
@@ -136,5 +137,40 @@ public class StudentDB {
 			return "Error adding Student: " + e.getMessage();
 		}
 		return "Added Student successfully";
+	}
+	
+	//TODO
+	/**
+	 * Retrieves all categories from the ItemCategory table.
+	 * 
+	 * @return list of categories
+	 * @throws SQLException
+	 */
+	public Object[] getCompanies() throws SQLException {
+		if (mConnection == null) {
+			mConnection = DataConnection.getConnection();
+		}
+		Statement stmt = null;
+		String query = "select * " + "from Company ";
+
+		List<Company> list = new ArrayList<Company>();
+		try {
+			stmt = mConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String name = rs.getString("companyName");
+				String id = new Integer(rs.getInt("companyId")).toString();
+				Company company = new Company(name);
+				company.setCompanyId(id);
+				list.add(company);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return list.toArray();
 	}
 }

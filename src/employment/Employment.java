@@ -1,4 +1,4 @@
-package student;
+package employment;
 
 /**
  * Represents an employment record associated with some Student.
@@ -6,35 +6,31 @@ package student;
  *
  */
 public class Employment {
-	
-	
+	private String mEmploymentId;
+	private Company mCompany;
+	/** mCurrent is true if the Student is currently working at this position, false otherwise */
+	private boolean mCurrent;
+	private String mDescription;
+	private int mSalary;
 
-	
-	public class Company { // TODO input validation
-		private String mCompanyId;
-		private String mCompanyName;
+	public Employment() {
 		
-		public Company(String companyName) {
-			
-		}
+	}
+	
+	public String getEmploymentId() {
+		return mEmploymentId;
+	}
 
-		/** @return the id number of the company */
-		public String getCompanyId() {
-			return mCompanyId;
-		}
+	public void setEmploymentId(String mEmploymentId) {
+		this.mEmploymentId = mEmploymentId;
+	}
 
-		public void setCompanyId(String mCompanyId) {
-			this.mCompanyId = mCompanyId;
-		}
+	public Company getCompany() {
+		return mCompany;
+	}
 
-		/** @return name of the company */
-		public String getCompanyName() {
-			return mCompanyName;
-		}
-
-		public void setCompanyName(String mCompanyName) {
-			this.mCompanyName = mCompanyName;
-		}
+	public void setCompany(Company mCompany) {
+		this.mCompany = mCompany;
 	}
 	
 	/**
