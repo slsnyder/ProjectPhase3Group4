@@ -1,5 +1,10 @@
 package student;
 
+/**
+ * 
+ * @author Sarah
+ *
+ */
 public class Student {
 
 	private String mId;
