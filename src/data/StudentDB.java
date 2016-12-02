@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import student.CollegeTransfer;
 import student.Student;
 
 public class StudentDB {
@@ -15,9 +16,9 @@ public class StudentDB {
 	private List<Student> mStudentList;
 	
 	/**
-	 * Retrieves all items from the Item table.
+	 * Retrieves all students from the Student table.
 	 * 
-	 * @return list of items
+	 * @return list of students
 	 * @throws SQLException
 	 */
 	public List<Student> getStudents() throws SQLException {
@@ -43,17 +44,11 @@ public class StudentDB {
 				String uwEmail = rs.getString("uwEmail");
 				String externalEmail = rs.getString("externalEmail");
 				
-				Student student = null;
-				// TODO create student
-				// TODO include tranfer/ internship/ employment ?
-				/*if (desc == null) {
-					item = new Item(name, new ItemCategory(category));
-					item.setId(new Integer(id).toString());
-				} else {
-					item = new Item(name, desc, price, condition,
-							new ItemCategory(category));
-					item.setId(new Integer(id).toString());
-				}*/
+				String yearStr = new Integer(gradYear).toString();
+				Student student = new Student(lastName, firstName, academicProgram,
+						degreeLevel, gradTerm, yearStr, gpa, uwEmail, externalEmail);
+				student.setId(new Integer(id).toString());
+				
 				mStudentList.add(student);
 			}
 		} catch (SQLException e) {
@@ -64,6 +59,43 @@ public class StudentDB {
 				stmt.close();
 			}
 		}
+		
+		setCollegeTransfers();
+		// TODO include internship/ employment
+		
 		return mStudentList;
+	}
+	
+	private void setCollegeTransfers() throws SQLException {
+		if (mConnection == null) {
+			mConnection = DataConnection.getConnection();
+		}
+		
+		Statement stmt = null;
+		String query;
+		
+		for( Student student : mStudentList) {
+			try {
+				query = "select * " + "from CollegeTransfer where studentId =  " + student.getId();
+				stmt = mConnection.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while (rs.next()) {
+					String schoolName = rs.getString("schoolName");
+					double gpa = rs.getDouble("transferGpa");
+					String year = new Integer(rs.getInt("transferYear")).toString();
+					
+					CollegeTransfer ct = new CollegeTransfer(schoolName, gpa, year);
+					
+					student.setCollegeTransfer(ct);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println(e);
+			} finally {
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+		}
 	}
 }

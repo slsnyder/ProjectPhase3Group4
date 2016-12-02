@@ -1,8 +1,11 @@
 package student;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
- * @author Sarah
+ * @author Sarah Snyder
  *
  */
 public class Student {
@@ -17,14 +20,14 @@ public class Student {
 	private double mGpa;
 	private String mUwEmail;
 	private String mExternalEmail;
+	private List<CollegeTransfer> mCollegeTransfer;
 
-	// TODO transfer/ internship/ employment
+	// TODO internship/ employment
 	
-	public Student(String id, String lastName, String firstName, 
+	public Student(String lastName, String firstName, 
 			String academicProgram, String degreeLevel, String gradTerm, 
 			String gradYear, double gpa, String uwEmail, String externalEmail) {
 		
-		this.setId(id);
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setAcademicProgram(academicProgram);
@@ -34,6 +37,7 @@ public class Student {
 		this.setGpa(gpa);
 		this.setUwEmail(uwEmail);
 		this.setExternalEmail(externalEmail);
+		mCollegeTransfer = null;
 	}
 
 	/** @return student id */
@@ -41,7 +45,7 @@ public class Student {
 		return mId;
 	}
 
-	private void setId(String id) {
+	public void setId(String id) {
 		Integer idNum = Integer.parseInt(id);
 		if (idNum < 0 || idNum > 9999999) {
 			throw new IllegalArgumentException("Invalid student ID number.");
@@ -163,6 +167,14 @@ public class Student {
 			throw new IllegalArgumentException("Invalid external email address.");
 		}
 		mExternalEmail = externalEmail;
+	}
+
+	public void setCollegeTransfer(CollegeTransfer ct) {
+		if(mCollegeTransfer == null) {
+			mCollegeTransfer = new ArrayList<CollegeTransfer>();
+		}
+		
+		mCollegeTransfer.add(ct);
 	}
 
 }
