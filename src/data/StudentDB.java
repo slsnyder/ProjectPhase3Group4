@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import employment.Employment;
 import employment.Company;
 import student.CollegeTransfer;
 import student.Student;
@@ -76,7 +77,7 @@ public class StudentDB {
 		Statement stmt = null;
 		String query;
 		
-		for( Student student : mStudentList) {
+		for(Student student : mStudentList) {
 			try {
 				query = "select * " + "from CollegeTransfer where studentId =  " + student.getId();
 				stmt = mConnection.createStatement();
@@ -89,6 +90,39 @@ public class StudentDB {
 					CollegeTransfer ct = new CollegeTransfer(schoolName, gpa, year);
 					
 					student.setCollegeTransfer(ct);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println(e);
+			} finally {
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+		}
+	}
+	
+	private void setEmployment() throws SQLException {
+		if (mConnection == null) {
+			mConnection = DataConnection.getConnection();
+		}
+		
+		Statement stmt = null;
+		String query;
+		
+		for(Student student : mStudentList) {
+			try {
+				query = "select * " + "from Employment where studentId =  " + student.getId() + " and internship = 0";
+				stmt = mConnection.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while (rs.next()) {
+					String schoolName = rs.getString("schoolName");
+					double gpa = rs.getDouble("transferGpa");
+					String year = new Integer(rs.getInt("transferYear")).toString();
+					//TODO
+					/*Employment e = new Employment();
+					
+					student.setEmployment(e);*/
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -138,12 +172,11 @@ public class StudentDB {
 		}
 		return "Added Student successfully";
 	}
-	
-	//TODO
+
 	/**
-	 * Retrieves all categories from the ItemCategory table.
+	 * Retrieves all companies from the Company table.
 	 * 
-	 * @return list of categories
+	 * @return list of companies
 	 * @throws SQLException
 	 */
 	public Object[] getCompanies() throws SQLException {
@@ -159,9 +192,7 @@ public class StudentDB {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				String name = rs.getString("companyName");
-				String id = new Integer(rs.getInt("companyId")).toString();
 				Company company = new Company(name);
-				company.setCompanyId(id);
 				list.add(company);
 			}
 		} catch (SQLException e) {

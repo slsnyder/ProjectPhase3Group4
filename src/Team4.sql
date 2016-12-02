@@ -19,9 +19,7 @@ CREATE TABLE CollegeTransfer (
 );
 
 CREATE TABLE Company (
-    companyId INT(11) auto_increment,
-    companyName VARCHAR(50) NOT NULL,
-    PRIMARY KEY (companyId, companyName)
+    companyName VARCHAR(50) PRIMARY KEY
 );
 
 CREATE TABLE Employment (
