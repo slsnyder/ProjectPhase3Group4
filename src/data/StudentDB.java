@@ -63,13 +63,14 @@ public class StudentDB {
 			}
 		}
 		
-		setCollegeTransfers();
-		// TODO include internship/ employment
+		setupCollegeTransfers();
+		setupEmployment();
+		setupInternship();
 		
 		return mStudentList;
 	}
 	
-	private void setCollegeTransfers() throws SQLException {
+	private void setupCollegeTransfers() throws SQLException {
 		if (mConnection == null) {
 			mConnection = DataConnection.getConnection();
 		}
@@ -89,7 +90,7 @@ public class StudentDB {
 					
 					CollegeTransfer ct = new CollegeTransfer(schoolName, gpa, year);
 					
-					student.setCollegeTransfer(ct);
+					student.addCollegeTransfer(ct);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -102,7 +103,7 @@ public class StudentDB {
 		}
 	}
 	
-	private void setEmployment() throws SQLException {
+	private void setupEmployment() throws SQLException {
 		if (mConnection == null) {
 			mConnection = DataConnection.getConnection();
 		}
@@ -116,13 +117,66 @@ public class StudentDB {
 				stmt = mConnection.createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 				while (rs.next()) {
-					String schoolName = rs.getString("schoolName");
-					double gpa = rs.getDouble("transferGpa");
-					String year = new Integer(rs.getInt("transferYear")).toString();
-					//TODO
-					/*Employment e = new Employment();
+					String companyName = rs.getString("companyName");
+					boolean current = true;
+					if(rs.getShort("current") == 0) {
+						current = false;
+					}
+					Employment e = new Employment(new Company(companyName), current);
 					
-					student.setEmployment(e);*/
+					String desc = rs.getString("positionDescription");
+					int salary = rs.getInt("salary");
+					if(desc != null) {
+						e.setDescription(desc);
+					}
+					if(salary != 0) {
+						e.setSalary(salary);
+					}
+					
+					student.addJob(e);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println(e);
+			} finally {
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+		}
+	}
+	
+	private void setupInternship() throws SQLException {
+		if (mConnection == null) {
+			mConnection = DataConnection.getConnection();
+		}
+		
+		Statement stmt = null;
+		String query;
+		
+		for(Student student : mStudentList) {
+			try {
+				query = "select * " + "from Employment where studentId =  " + student.getId() + " and internship <> 0";
+				stmt = mConnection.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				while (rs.next()) {
+					String companyName = rs.getString("companyName");
+					boolean current = true;
+					if(rs.getShort("current") == 0) {
+						current = false;
+					}
+					Employment e = new Employment(new Company(companyName), current);
+					
+					String desc = rs.getString("positionDescription");
+					int salary = rs.getInt("salary");
+					if(desc != null) {
+						e.setDescription(desc);
+					}
+					if(salary != 0) {
+						e.setSalary(salary);
+					}
+					
+					student.addInternship(e);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -166,6 +220,7 @@ public class StudentDB {
 			preparedStatement.setString(8, student.getUwEmail());
 			preparedStatement.setString(9, student.getExternalEmail());
 			preparedStatement.executeUpdate();
+			//TODO college transfer / employment / internship ?
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "Error adding Student: " + e.getMessage();

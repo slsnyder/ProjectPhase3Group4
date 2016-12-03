@@ -28,7 +28,7 @@ CREATE TABLE Employment (
 	companyName VARCHAR(50) references Company(companyName),
 	current TINYINT(1) NOT NULL,
 	positionDescription VARCHAR(200),
-	salary INT(7),
+	salary INT(11),
 	internship TINYINT(1) NOT NULL
 );
 

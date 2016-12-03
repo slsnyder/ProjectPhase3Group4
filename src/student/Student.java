@@ -3,6 +3,8 @@ package student;
 import java.util.ArrayList;
 import java.util.List;
 
+import employment.Employment;
+
 /**
  * 
  * @author Sarah Snyder
@@ -21,10 +23,8 @@ public class Student {
 	private String mUwEmail;
 	private String mExternalEmail;
 	private List<CollegeTransfer> mCollegeTransfer;
-	// private List<Employment> mJobs;
-	// private List<Employment> mInternships;
-
-	// TODO internship/ employment
+	private List<Employment> mJobs;
+	private List<Employment> mInternships;
 	
 	public Student(String lastName, String firstName, 
 			String academicProgram, String degreeLevel, String gradTerm, 
@@ -166,12 +166,35 @@ public class Student {
 		mExternalEmail = externalEmail;
 	}
 
-	public void setCollegeTransfer(CollegeTransfer ct) {
+	//TODO input validation after this point / missing getters &setters
+	public void addCollegeTransfer(CollegeTransfer ct) {
 		if(mCollegeTransfer == null) {
 			mCollegeTransfer = new ArrayList<CollegeTransfer>();
 		}
 		
 		mCollegeTransfer.add(ct);
+	}
+
+	public List<Employment> getJobs() {
+		return mJobs;
+	}
+
+	public void addJob(Employment job) {
+		if(mJobs == null) {
+			mJobs = new ArrayList<Employment>();
+		}
+		mJobs.add(job);
+	}
+
+	public List<Employment> getInternships() {
+		return mInternships;
+	}
+
+	public void addInternship(Employment internship) {
+		if(mInternships == null) {
+			mInternships = new ArrayList<Employment>();
+		}
+		mInternships.add(internship);
 	}
 
 }
