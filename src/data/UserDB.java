@@ -11,6 +11,7 @@ import java.util.List;
 import user.User;
 
 /**
+ * This class contains methods to access User data.
  * @author Teddy
  *
  */
@@ -53,6 +54,13 @@ public class UserDB {
 		return userList;
 	}
 	
+	/**
+	 * Adds the user.
+	 *
+	 * @param user the user.
+	 * @return the string "Added User Successfully" if successful,
+	 *         "Error adding user: " if not.
+	 */
 	public String addUser(User user) {
 		String sql = "insert into User(uwEmail, password, role) values "
 				+ "(?, ?, ?); ";

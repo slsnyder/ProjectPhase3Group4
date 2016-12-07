@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 /**
  * 
- * @author Teddy
+ * @author mAbraham
  *
  */
 public class MainGUI extends JFrame {
